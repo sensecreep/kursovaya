@@ -5,9 +5,19 @@ namespace online_shop
 {
     internal class Program
     {
-        public const int registration = 1;
+        static void Continue()
+        {
+            Console.WriteLine("\nНажмите любую кнопку для продолжения");
+            string a = Console.ReadLine();
+            Console.Clear();
+        }
+
+        public const int accountWork = 1;
         public const int showCustomers = 2;
         public const int showGoods = 3;
+        public const int registration = 1;
+        public const int editing = 2;
+        public const int remove = 3;
         static void Main(string[] args)
         {
             Shop shop = new();
@@ -41,28 +51,61 @@ namespace online_shop
                 shop.AddGoods(good);
             }
 
-            Console.WriteLine("Чтобы добавить нового пользователя нажмите 1, показать всех пользователей - 2, показать все товары - 3");
-            int number = int.Parse(Console.ReadLine());
-
-            switch(number)
+            while (true)
             {
-                case registration:
-                    try
-                    {
-                        Customer customer = new Customer();
-                        customer.Registration();
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                    break;
-                case showCustomers:
-                    shop.PrintCustomers();
-                    break;
-                case showGoods:
-                    shop.PrintGoods(1);
-                    break;
+                Console.WriteLine("Для работы над аккаунтом нажмите 1, показать всех пользователей - 2, показать все товары - 3");
+                int number = int.Parse(Console.ReadLine());
+                Console.Clear();
+
+                switch (number)
+                {
+                    case accountWork:
+                        int number2 = 0;
+                        while (number2 != 4)
+                        {
+                            Console.WriteLine("Чтобы зарегистрироваться нажмите 1, чтобы отредактировать свой аккаунт - 2, чтобы удалить аккаунт - 3, чтобы вернуться в основное меню - 4");
+                            number2 = int.Parse(Console.ReadLine());
+                            switch (number2)
+                            {
+                                case registration:
+                                    try
+                                    {
+                                        Customer customer = new Customer();
+                                        customer.Registration();
+                                        Console.WriteLine("\nПользователь успешно добавлен!");
+                                        Continue();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
+                                    }
+                                    break;
+                                case remove:
+                                    shop.RemoveCustomer(Console.ReadLine());
+                                    Continue();
+                                    break;
+                            }
+                        }
+                        Continue();
+                        break;
+                    case showCustomers:
+                        shop.PrintCustomers();
+                        Continue();
+                        break;
+                    case showGoods:
+                        Console.WriteLine("Если вы хотите посмотреть весь список товаров нажмите 1, только виниловые пластинки - 2, только компакт-диски - 3");
+                        int chooseGoods = int.Parse(Console.ReadLine());
+                        if (chooseGoods >0 && chooseGoods < 4)
+                        {
+                            shop.PrintGoods(chooseGoods);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ошибка! Недопустимое значение");
+                            Continue();
+                        }
+                        break;
+                }
             }
         }
     }
@@ -94,7 +137,7 @@ public class Customer
         {
             if (int.TryParse(value, out int num))
             {
-                throw new ArgumentOutOfRangeException(nameof(Name), "Фамилия не может быть числом");
+                throw new Exception("Фамилия не может быть числом");
             }
             else
             {
@@ -113,13 +156,17 @@ public class Customer
 
                 value = '8' + value.Substring(2);
             }
+            if (value[0] != '8') //еще про кол-во цифр дописать надо
+            {
+                throw new Exception("Номер не соответсвует стандарту: должен начинать с +7 или 8");
+            }
             if (int.TryParse(value, out int num))
             {
                 _phoneNumber = value;
             }
             else
             {
-                throw new ArgumentOutOfRangeException(nameof(PhoneNumber), "В номере не могут содержаться не числовые символы");
+                throw new Exception("В номере не могут содержаться не числовые символы");
             }
         }
     }
@@ -128,13 +175,10 @@ public class Customer
     {
         Console.WriteLine("Введите имя пользователя: ");
         Name = Console.ReadLine();
-        Console.Clear();
         Console.WriteLine("Введите фамилию пользователя: ");
         Surname = Console.ReadLine();
-        Console.Clear();
         Console.WriteLine("Введите номер телефона пользователя: ");
         PhoneNumber = Console.ReadLine();
-        Console.Clear();
         Shop.AddCustomer(this);
     }
 }
@@ -205,6 +249,18 @@ public class Shop
     {
         customers.Add(customer);
     }
+    public void RemoveCustomer(string phoneNum)
+    {
+        foreach (Customer customer in customers)
+        {
+            if (customer.PhoneNumber == phoneNum)
+            {
+                Console.WriteLine($"{customer.Name}, {customer.Surname}, {customer.PhoneNumber}");
+                Console.WriteLine(customers.IndexOf(customer));
+                customers.RemoveAt(customers.IndexOf(customer));
+            }
+        }
+    }
     public void PrintCustomers()
     {
         foreach (Customer customer in customers)
@@ -233,17 +289,27 @@ public class Shop
             {
                 if (good is Record record)
                 {
-                    Console.WriteLine(record.Info());
+                    Console.WriteLine($"Vinyl: {record.Info()}");
                 }
                 else if (good is CD cd)
                 {
-                    Console.WriteLine(cd.Info());
+                    Console.WriteLine($"CD: {cd.Info()}");
                 }
             }
         }
-        else
+        if (num == 2)
         {
-            Console.WriteLine("nfeo");
+            foreach (Record record in records)
+            {
+                Console.WriteLine($"Vinyl: {record.Info()}");
+            }
+        }
+        if (num == 3)
+        {
+            foreach (CD cd in cds)
+            {
+                Console.WriteLine($"CD: {cd.Info()}");
+            }
         }
     }
 }

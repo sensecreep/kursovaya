@@ -12,3 +12,17 @@ D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\refint\online_shop.dll
 D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.pdb
 D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.genruntimeconfig.cache
 D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\ref\online_shop.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\online_shop.exe
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\online_shop.deps.json
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\online_shop.runtimeconfig.json
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\online_shop.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\online_shop.pdb
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.GeneratedMSBuildEditorConfig.editorconfig
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.AssemblyInfoInputs.cache
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.AssemblyInfo.cs
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.csproj.CoreCompileInputs.cache
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.dll
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\refint\online_shop.dll
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.pdb
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.genruntimeconfig.cache
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\ref\online_shop.dll
