@@ -1,0 +1,14 @@
+D:\visual studio\online_shop\online_shop\bin\Debug\net7.0\online_shop.exe
+D:\visual studio\online_shop\online_shop\bin\Debug\net7.0\online_shop.deps.json
+D:\visual studio\online_shop\online_shop\bin\Debug\net7.0\online_shop.runtimeconfig.json
+D:\visual studio\online_shop\online_shop\bin\Debug\net7.0\online_shop.dll
+D:\visual studio\online_shop\online_shop\bin\Debug\net7.0\online_shop.pdb
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.GeneratedMSBuildEditorConfig.editorconfig
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.AssemblyInfoInputs.cache
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.AssemblyInfo.cs
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.csproj.CoreCompileInputs.cache
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.dll
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\refint\online_shop.dll
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.pdb
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\online_shop.genruntimeconfig.cache
+D:\visual studio\online_shop\online_shop\obj\Debug\net7.0\ref\online_shop.dll
