@@ -10,7 +10,7 @@ namespace online_shop
     {
         static void Continue()
         {
-            Console.WriteLine("\nНажмите любую кнопку для продолжения");
+            Console.WriteLine("\nНажмите Enter для продолжения");
             string a = Console.ReadLine();
             Console.Clear();
         }
@@ -18,10 +18,9 @@ namespace online_shop
         public const int accountWork = 1;
         public const int showCustomers = 2;
         public const int showGoods = 3;
-        public const int order = 4;
+        public const int order = 4; //добавить ф-цию на случай если товары кончились
         public const int registration = 1;
-        public const int editing = 2;
-        public const int remove = 3;
+        public const int remove = 2;
 
         static void Main(string[] args)
         {
@@ -31,9 +30,9 @@ namespace online_shop
 
             List<Record> records = new()
             {
-                new Record(55, "OK Computer", "Radiohead", 6000, 50, "nie"),
-                new Record(27, "Ultraviolence", "Lana Del Rey", 5500, 70, "nie"),
-                new Record(33, "Diamond Eyes", "Deftones", 5500, 50, "nie")
+                new Record(55, "OK Computer", "Radiohead", 6000, 50, "синий"),
+                new Record(27, "Ultraviolence", "Lana Del Rey", 5500, 70, "прозрачный"),
+                new Record(33, "Diamond Eyes", "Deftones", 5500, 50, "черный")
             };
 
             List<CD> cds = new()
@@ -66,9 +65,9 @@ namespace online_shop
                 {
                     case accountWork:
                         int number2 = 0;
-                        while (number2 != 4)
+                        while (number2 != 3)
                         {
-                            Console.WriteLine("Чтобы зарегистрироваться нажмите 1, чтобы отредактировать свой аккаунт - 2, чтобы удалить аккаунт - 3, чтобы вернуться в основное меню - 4");
+                            Console.WriteLine("Чтобы зарегистрироваться нажмите 1, чтобы удалить аккаунт - 2, чтобы вернуться в основное меню - 3");
                             number2 = int.Parse(Console.ReadLine());
                             switch (number2)
                             {
@@ -82,10 +81,21 @@ namespace online_shop
                                     catch (Exception ex)
                                     {
                                         Console.WriteLine(ex.Message);
+                                        Continue();
                                     }
                                     break;
                                 case remove:
-                                    shop.RemoveCustomer(Console.ReadLine());
+                                    Console.Clear();
+                                    Console.WriteLine("Для удаления введите номер телефона, что привязан к Вашему аккаунту:");
+                                    string num = Console.ReadLine();
+                                    if (shop.SearchCustomer(num) == null)
+                                    {
+                                        Console.WriteLine("\nТакого пользователя нет, невозможно удалить аккаунт");
+                                        Continue();
+                                        break;
+                                    }
+                                    shop.RemoveCustomer(num);
+                                    Console.WriteLine("Пользователь успешно удален");
                                     Continue();
                                     break;
                             }
@@ -114,6 +124,17 @@ namespace online_shop
                         string stop = "none";
                         Order newOrder = new();
 
+                        Random random = new Random();
+                        newOrder.ID = random.Next(1, 100);
+                        Console.WriteLine("Чтобы оформить заказа введите номер телефона, который привязан к Вашему аккаунту: ");
+                        string numCustomer = Console.ReadLine();
+                        if (shop.SearchCustomer(numCustomer) == null)
+                        {
+                            Console.WriteLine("\nТакого пользователя нет, невозможно оформить заказ");
+                            Continue();
+                            break;
+                        }
+
                         while (stop!="S")
                         {
                             Console.WriteLine("Список товаров:\n");
@@ -125,6 +146,7 @@ namespace online_shop
                                 if (product.ID == id_chosed)
                                 {
                                     newOrder.AddOrder(shop.SearchGoods(id_chosed));
+                                    product.InStock();
                                 }
                             }
 
@@ -136,15 +158,7 @@ namespace online_shop
                             stop = Console.ReadLine().ToUpper();
                             Console.Clear();
                         }
-                        Random random = new Random();
-                        newOrder.ID = random.Next(1,100);
-                        Console.WriteLine("Чтобы оформить заказа введите номер телефона, который привязан к Вашему аккаунту: ");
-                        string numCustomer = Console.ReadLine();
-                        if (shop.SearchCustomer(numCustomer) == null)
-                        {
-                            Console.WriteLine("\nТакого пользователя нет, невозможно оформить заказ");
-                            break;
-                        }
+
                         (shop.SearchCustomer(numCustomer)).AddNewOrder(newOrder);
                         (shop.SearchCustomer(numCustomer)).ShowOrders();
                         break;
@@ -165,10 +179,17 @@ abstract public class Goods
     public int AmountInStock
     {
         get { return _amount; }
-        set { if  (value < 0)
+        set
+        {
+            if ( value < 0 )
             {
                 _amount = 0;
-            } }
+            }
+            else
+            {
+                _amount = value;
+            }
+        }
     }
     public Goods(int id, string album, string band, double price, int amountInStock)
     {
@@ -193,7 +214,7 @@ public class Record : Goods
     }
     public override string Info()
     {
-        return $"{ID}, {Album}, {Band}, {Price}, {AmountInStock}, {Color}";
+        return $"(ID: {ID}) '{Album}' - {Band}, {Price} руб., в наличии {AmountInStock} шт., цвет: {Color}";
     }
 }
 
@@ -202,7 +223,7 @@ public class CD : Goods
     public CD(int id, string album, string band, double price, int amountInStock) : base(id, album, band, price, amountInStock) { }
     public override string Info()
     {
-        return $"{ID}, {Album}, {Band}, {Price}, {AmountInStock}";
+        return $"(ID: {ID}) '{Album}' - {Band}, {Price} руб., в наличии {AmountInStock} шт.";
     }
 }
 

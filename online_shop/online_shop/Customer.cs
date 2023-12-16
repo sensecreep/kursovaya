@@ -27,7 +27,7 @@ public class Customer
         {
             if (int.TryParse(value, out int num))
             {
-                throw new Exception("Имя не может быть числом");
+                throw new Exception("Ошибка! Имя не может быть числом");
             }
             else
             {
@@ -43,7 +43,7 @@ public class Customer
         {
             if (int.TryParse(value, out int num))
             {
-                throw new Exception("Фамилия не может быть числом");
+                throw new Exception("Ошибка! Фамилия не может быть числом");
             }
             else
             {
@@ -64,7 +64,7 @@ public class Customer
             }
             if (value[0] != '8') //еще про кол-во цифр дописать надо
             {
-                throw new Exception("Номер не соответсвует стандарту: должен начинать с +7 или 8");
+                throw new Exception("Ошибка! Номер не соответсвует стандарту: должен начинать с +7 или 8");
             }
             if (int.TryParse(value, out int num))
             {
@@ -72,7 +72,7 @@ public class Customer
             }
             else
             {
-                throw new Exception("В номере не могут содержаться не числовые символы");
+                throw new Exception("Ошибка! В номере не могут содержаться не числовые символы");
             }
         }
     }

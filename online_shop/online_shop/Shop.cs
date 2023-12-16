@@ -10,7 +10,6 @@ public class Shop
     public static List<Goods> goods = new();
     public static List<Record> records = new();
     public static List<CD> cds = new();
-    public static List<int> orders = new();
     public void AddCustomer()
     {
         Customer customer = new Customer();
@@ -20,6 +19,13 @@ public class Shop
         customer.Surname = Console.ReadLine();
         Console.WriteLine("Введите номер телефона пользователя: ");
         customer.PhoneNumber = Console.ReadLine();
+        foreach (Customer customerr  in customers)
+        {
+            if (customerr.PhoneNumber == customer.PhoneNumber)
+            {
+                throw new Exception("Пользователь с таким номером уже существует, невозможно создать нового");
+            }
+        }
         customers.Add(customer);
     }
     public void RemoveCustomer(string phoneNum)
