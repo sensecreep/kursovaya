@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Drawing;
+using System.Net.Http.Headers;
 using System.Xml.Linq;
 
 namespace online_shop
@@ -15,9 +18,11 @@ namespace online_shop
         public const int accountWork = 1;
         public const int showCustomers = 2;
         public const int showGoods = 3;
+        public const int order = 4;
         public const int registration = 1;
         public const int editing = 2;
         public const int remove = 3;
+
         static void Main(string[] args)
         {
             Shop shop = new();
@@ -26,16 +31,16 @@ namespace online_shop
 
             List<Record> records = new()
             {
-                new Record("OK Computer", "Radiohead", 6000, 50, "nie"),
-                new Record("Ultraviolence", "Lana Del Rey", 5500, 70, "nie"),
-                new Record("Diamond Eyes", "Deftones", 5500, 50, "nie")
+                new Record(55, "OK Computer", "Radiohead", 6000, 50, "nie"),
+                new Record(27, "Ultraviolence", "Lana Del Rey", 5500, 70, "nie"),
+                new Record(33, "Diamond Eyes", "Deftones", 5500, 50, "nie")
             };
 
             List<CD> cds = new()
             {
-                new CD("OK Computer", "Radiohead", 6000, 65),
-                new CD("Ultraviolence", "Lana Del Rey", 5500, 30),
-                new CD("Diamond Eyes", "Deftones", 5500, 7)
+                new CD(34,"In Rainbows", "Radiohead", 750, 65),
+                new CD(67,"Puberty 2", "Mitski", 1200, 30),
+                new CD(90,"The Head On The Door", "The Cure", 830, 7)
             };
 
             foreach (Record record in records)
@@ -53,7 +58,7 @@ namespace online_shop
 
             while (true)
             {
-                Console.WriteLine("Для работы над аккаунтом нажмите 1, показать всех пользователей - 2, показать все товары - 3");
+                Console.WriteLine("Для работы над аккаунтом нажмите 1, показать всех пользователей - 2, показать все товары - 3, сделать заказ - 4");
                 int number = int.Parse(Console.ReadLine());
                 Console.Clear();
 
@@ -70,8 +75,7 @@ namespace online_shop
                                 case registration:
                                     try
                                     {
-                                        Customer customer = new Customer();
-                                        customer.Registration();
+                                        shop.AddCustomer();
                                         Console.WriteLine("\nПользователь успешно добавлен!");
                                         Continue();
                                     }
@@ -98,6 +102,7 @@ namespace online_shop
                         if (chooseGoods >0 && chooseGoods < 4)
                         {
                             shop.PrintGoods(chooseGoods);
+                            Continue();
                         }
                         else
                         {
@@ -105,86 +110,54 @@ namespace online_shop
                             Continue();
                         }
                         break;
+                    case order:
+                        string stop = "none";
+                        Order newOrder = new();
+
+                        while (stop!="S")
+                        {
+                            Console.WriteLine("Список товаров:\n");
+                            shop.PrintGoods(1);
+                            Console.WriteLine("\nВведите ID желаемого товара:");
+                            int id_chosed = int.Parse(Console.ReadLine());
+                            foreach (Goods product in goods)
+                            {
+                                if (product.ID == id_chosed)
+                                {
+                                    newOrder.AddOrder(shop.SearchGoods(id_chosed));
+                                }
+                            }
+
+                            Console.WriteLine("\nВаш заказ: ");
+                            newOrder.PrintOrder();
+                            Console.WriteLine($"Итоговая стоимость: {newOrder.TotalSum()}");
+
+                            Console.WriteLine("\nДля продолжения покупок нажмите Enter, для завершения заказа - 'S'");
+                            stop = Console.ReadLine().ToUpper();
+                            Console.Clear();
+                        }
+                        Random random = new Random();
+                        newOrder.ID = random.Next(1,100);
+                        Console.WriteLine("Чтобы оформить заказа введите номер телефона, который привязан к Вашему аккаунту: ");
+                        string numCustomer = Console.ReadLine();
+                        if (shop.SearchCustomer(numCustomer) == null)
+                        {
+                            Console.WriteLine("\nТакого пользователя нет, невозможно оформить заказ");
+                            break;
+                        }
+                        (shop.SearchCustomer(numCustomer)).AddNewOrder(newOrder);
+                        (shop.SearchCustomer(numCustomer)).ShowOrders();
+                        break;
                 }
             }
         }
     }
 }
 
-public class Customer
-{
-    string _name;
-    public string Name
-    {
-        get { return _name; }
-        set
-        {
-            if (int.TryParse(value, out int num))
-            {
-                throw new Exception("Имя не может быть числом");
-            }
-            else
-            {
-                _name = value;
-            }
-        }
-    }
-    string _surname;
-    public string Surname
-    {
-        get { return _surname; }
-        set
-        {
-            if (int.TryParse(value, out int num))
-            {
-                throw new Exception("Фамилия не может быть числом");
-            }
-            else
-            {
-                _surname = value;
-            }
-        }
-    }
-    string _phoneNumber;
-    public string PhoneNumber
-    {
-        get { return _phoneNumber; }
-        set
-        {
-            if (value[0] == '+' && value[1] == '7')
-            {
-
-                value = '8' + value.Substring(2);
-            }
-            if (value[0] != '8') //еще про кол-во цифр дописать надо
-            {
-                throw new Exception("Номер не соответсвует стандарту: должен начинать с +7 или 8");
-            }
-            if (int.TryParse(value, out int num))
-            {
-                _phoneNumber = value;
-            }
-            else
-            {
-                throw new Exception("В номере не могут содержаться не числовые символы");
-            }
-        }
-    }
-
-    public void Registration()
-    {
-        Console.WriteLine("Введите имя пользователя: ");
-        Name = Console.ReadLine();
-        Console.WriteLine("Введите фамилию пользователя: ");
-        Surname = Console.ReadLine();
-        Console.WriteLine("Введите номер телефона пользователя: ");
-        PhoneNumber = Console.ReadLine();
-        Shop.AddCustomer(this);
-    }
-}
 
 abstract public class Goods
 {
+    public int ID { get; }
     public string Album { get; }
     public string Band { get; }
     public double Price { get; }
@@ -197,8 +170,9 @@ abstract public class Goods
                 _amount = 0;
             } }
     }
-    public Goods(string album, string band, double price, int amountInStock)
+    public Goods(int id, string album, string band, double price, int amountInStock)
     {
+        ID = id;
         Album = album;
         Band = band;
         Price = price;
@@ -212,107 +186,54 @@ abstract public class Goods
 }
 public class Record : Goods
 {
-    string Color { get; }
-    public Record(string album, string band, double price, int amountInStock, string color) : base(album, band, price, amountInStock)
+    public string Color { get; }
+    public Record(int id, string album, string band, double price, int amountInStock, string color) : base(id, album, band, price, amountInStock)
     {
         Color = color;
     }
     public override string Info()
     {
-        return $"{Album}, {Band}, {Price}, {AmountInStock}, {Color}";
+        return $"{ID}, {Album}, {Band}, {Price}, {AmountInStock}, {Color}";
     }
 }
 
 public class CD : Goods
 {
-    public CD(string album, string band, double price, int amountInStock) : base(album, band, price, amountInStock) { }
+    public CD(int id, string album, string band, double price, int amountInStock) : base(id, album, band, price, amountInStock) { }
     public override string Info()
     {
-        return $"{Album}, {Band}, {Price}, {AmountInStock}";
+        return $"{ID}, {Album}, {Band}, {Price}, {AmountInStock}";
     }
-    //int _id;
 }
 
-public class Order : Customer
+public class Order
 {
+    public List<Goods> goodsInOrder = new();
     int _id;
-    int _orderDate;
+    public int ID { get { return _id; } set { _id = value; } }
+    public void AddOrder(Goods goods)
+    {
+        goodsInOrder.Add(goods);
+    }
+    public void PrintOrder()
+    {
+        foreach (Goods good in goodsInOrder)
+        {
+            Console.WriteLine($"{good.Album}, {good.Band}, {good.Price}, {good.AmountInStock}");
+        }
+    }
+    public double TotalSum()
+    {
+        double total = 0;
+        foreach (Goods good in goodsInOrder)
+        {
+            total += good.Price;
+        }
+        return total;
+    }
 }
 
-public class Shop
-{
-    public static List<Customer> customers = new();
-    public static List<Goods> goods = new();
-    public static List<Record> records = new();
-    public static List<CD> cds = new();
-    static public void AddCustomer(Customer customer)
-    {
-        customers.Add(customer);
-    }
-    public void RemoveCustomer(string phoneNum)
-    {
-        foreach (Customer customer in customers)
-        {
-            if (customer.PhoneNumber == phoneNum)
-            {
-                Console.WriteLine($"{customer.Name}, {customer.Surname}, {customer.PhoneNumber}");
-                Console.WriteLine(customers.IndexOf(customer));
-                customers.RemoveAt(customers.IndexOf(customer));
-            }
-        }
-    }
-    public void PrintCustomers()
-    {
-        foreach (Customer customer in customers)
-        {
-            Console.WriteLine($"{customer.Name}, {customer.Surname}, {customer.PhoneNumber}");
-        }
-    }
-    public void AddGoods<T>(T product) where T : Goods
-    {
-        if (product is Record record) //добавление пластинки в список всех товаров и список пластинок
-        {
-            records.Add(record);
-            goods.Add(product);
-        }
-        else if (product is CD cd) //добавление компакт-диска в список всех товаров и список компакт-дисков
-        {
-            cds.Add(cd);
-            goods.Add(product);
-        }
-    }
-    public void PrintGoods(int num)
-    {
-        if (num == 1)
-        {
-            foreach (Goods good in goods)
-            {
-                if (good is Record record)
-                {
-                    Console.WriteLine($"Vinyl: {record.Info()}");
-                }
-                else if (good is CD cd)
-                {
-                    Console.WriteLine($"CD: {cd.Info()}");
-                }
-            }
-        }
-        if (num == 2)
-        {
-            foreach (Record record in records)
-            {
-                Console.WriteLine($"Vinyl: {record.Info()}");
-            }
-        }
-        if (num == 3)
-        {
-            foreach (CD cd in cds)
-            {
-                Console.WriteLine($"CD: {cd.Info()}");
-            }
-        }
-    }
-}
+
 
 public class DataBase
 {

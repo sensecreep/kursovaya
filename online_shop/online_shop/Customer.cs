@@ -6,6 +6,19 @@ using System.Threading.Tasks;
 
 public class Customer
 {
+    List<Order> orders = new();
+    public void AddNewOrder(Order order)
+    {
+        orders.Add(order);
+    }
+    public void ShowOrders()
+    {
+        foreach (Order order in orders)
+        {
+            Console.WriteLine($"{order.ID}, {order.TotalSum()}");
+        }
+    }
+
     string _name;
     public string Name
     {
@@ -62,16 +75,5 @@ public class Customer
                 throw new Exception("В номере не могут содержаться не числовые символы");
             }
         }
-    }
-
-    public void Registration()
-    {
-        Console.WriteLine("Введите имя пользователя: ");
-        Name = Console.ReadLine();
-        Console.WriteLine("Введите фамилию пользователя: ");
-        Surname = Console.ReadLine();
-        Console.WriteLine("Введите номер телефона пользователя: ");
-        PhoneNumber = Console.ReadLine();
-        Shop.AddCustomer(this);
     }
 }
