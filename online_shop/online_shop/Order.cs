@@ -17,7 +17,7 @@ public class Order
     {
         foreach (Goods good in goodsInOrder)
         {
-            Console.WriteLine($"{good.Album}, {good.Band}, {good.Price}, {good.AmountInStock}");
+            Console.WriteLine($"'{good.Album}' - {good.Band}, {good.Price} руб.");
         }
     }
     public double TotalSum()

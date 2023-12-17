@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//абстрактный класс, содержащий общие характеристики всех товаров в магазине
 abstract public class Goods
 {
-    public int ID { get; }
-    public string Album { get; }
-    public string Band { get; }
-    public double Price { get; }
+    public int ID { get; } //индивидуальный код товара для однозначной идентификации при заказе
+    public string Album { get; } //название альбома 
+    public string Band { get; } //название группы-исполнителя
+    public double Price { get; } //цена
     int _amount;
-    public int AmountInStock
+    public int AmountInStock //кол-во единиц товара, оставшихся в наличии
     {
         get { return _amount; }
         set
@@ -26,7 +27,7 @@ abstract public class Goods
             }
         }
     }
-    public Goods(int id, string album, string band, double price, int amountInStock)
+    public Goods(int id, string album, string band, double price, int amountInStock) //конструктор
     {
         ID = id;
         Album = album;
@@ -34,20 +35,20 @@ abstract public class Goods
         Price = price;
         AmountInStock = amountInStock;
     }
-    public abstract string Info();
-    public int InStock() //кол-во после покупки
+    public abstract string Info(); //ф-ция для вывода информации о товаре
+    public int InStock() //ф-ция, считающая и запоминающее оставшееся кол-во товаров после их покупки
     {
         return AmountInStock -= 1;
     }
 }
-public class Record : Goods
+public class Record : Goods //класс-наследник для виниловых пластинок
 {
-    public string Color { get; }
-    public Record(int id, string album, string band, double price, int amountInStock, string color) : base(id, album, band, price, amountInStock)
+    public string Color { get; } //цвет пластинки
+    public Record(int id, string album, string band, double price, int amountInStock, string color) : base(id, album, band, price, amountInStock) //конструктор
     {
         Color = color;
     }
-    public override string Info()
+    public override string Info() 
     {
         return $"(ID: {ID}) '{Album}' - {Band}, {Price} руб., в наличии {AmountInStock} шт., цвет: {Color}";
     }

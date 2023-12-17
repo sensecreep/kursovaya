@@ -159,7 +159,7 @@ namespace online_shop
 
                             Console.WriteLine("\nВаш заказ: ");
                             newOrder.PrintOrder();
-                            Console.WriteLine($"Итоговая стоимость: {newOrder.TotalSum()}");
+                            Console.WriteLine($"Итоговая стоимость: {newOrder.TotalSum()} руб.");
 
                             Console.WriteLine("\nДля продолжения покупок нажмите Enter, для завершения заказа - 'S'");
                             stop = Console.ReadLine().ToUpper();
