@@ -18,7 +18,7 @@ namespace online_shop
         public const int accountWork = 1;
         public const int showCustomers = 2;
         public const int showGoods = 3;
-        public const int order = 4; //добавить ф-цию на случай если товары кончились
+        public const int order = 4;
         public const int registration = 1;
         public const int remove = 2;
 
@@ -39,7 +39,7 @@ namespace online_shop
             {
                 new CD(34,"In Rainbows", "Radiohead", 750, 65),
                 new CD(67,"Puberty 2", "Mitski", 1200, 30),
-                new CD(90,"The Head On The Door", "The Cure", 830, 7)
+                new CD(90,"The Head On The Door", "The Cure", 830, 22)
             };
 
             foreach (Record record in records)
@@ -145,8 +145,15 @@ namespace online_shop
                             {
                                 if (product.ID == id_chosed)
                                 {
-                                    newOrder.AddOrder(shop.SearchGoods(id_chosed));
-                                    product.InStock();
+                                    if (product.AmountInStock == 0)
+                                    {
+                                        Console.WriteLine("Извините, товара больше нет в наличии!");
+                                    }
+                                    else
+                                    {
+                                        newOrder.AddOrder(shop.SearchGoods(id_chosed));
+                                        product.InStock();
+                                    }
                                 }
                             }
 
@@ -158,103 +165,19 @@ namespace online_shop
                             stop = Console.ReadLine().ToUpper();
                             Console.Clear();
                         }
-
-                        (shop.SearchCustomer(numCustomer)).AddNewOrder(newOrder);
+                        if (newOrder.CountProducts() != 0)
+                        {
+                            (shop.SearchCustomer(numCustomer)).AddNewOrder(newOrder);
+                        }
+                        Console.WriteLine("Ваши заказы:");
                         (shop.SearchCustomer(numCustomer)).ShowOrders();
+                        Continue();
                         break;
                 }
             }
         }
     }
 }
-
-
-abstract public class Goods
-{
-    public int ID { get; }
-    public string Album { get; }
-    public string Band { get; }
-    public double Price { get; }
-    int _amount;
-    public int AmountInStock
-    {
-        get { return _amount; }
-        set
-        {
-            if ( value < 0 )
-            {
-                _amount = 0;
-            }
-            else
-            {
-                _amount = value;
-            }
-        }
-    }
-    public Goods(int id, string album, string band, double price, int amountInStock)
-    {
-        ID = id;
-        Album = album;
-        Band = band;
-        Price = price;
-        AmountInStock = amountInStock;
-    }
-    public abstract string Info();
-    public int InStock() //кол-во после покупки
-    {
-        return AmountInStock -= 1;
-    }
-}
-public class Record : Goods
-{
-    public string Color { get; }
-    public Record(int id, string album, string band, double price, int amountInStock, string color) : base(id, album, band, price, amountInStock)
-    {
-        Color = color;
-    }
-    public override string Info()
-    {
-        return $"(ID: {ID}) '{Album}' - {Band}, {Price} руб., в наличии {AmountInStock} шт., цвет: {Color}";
-    }
-}
-
-public class CD : Goods
-{
-    public CD(int id, string album, string band, double price, int amountInStock) : base(id, album, band, price, amountInStock) { }
-    public override string Info()
-    {
-        return $"(ID: {ID}) '{Album}' - {Band}, {Price} руб., в наличии {AmountInStock} шт.";
-    }
-}
-
-public class Order
-{
-    public List<Goods> goodsInOrder = new();
-    int _id;
-    public int ID { get { return _id; } set { _id = value; } }
-    public void AddOrder(Goods goods)
-    {
-        goodsInOrder.Add(goods);
-    }
-    public void PrintOrder()
-    {
-        foreach (Goods good in goodsInOrder)
-        {
-            Console.WriteLine($"{good.Album}, {good.Band}, {good.Price}, {good.AmountInStock}");
-        }
-    }
-    public double TotalSum()
-    {
-        double total = 0;
-        foreach (Goods good in goodsInOrder)
-        {
-            total += good.Price;
-        }
-        return total;
-    }
-}
-
-
 
 public class DataBase
 {

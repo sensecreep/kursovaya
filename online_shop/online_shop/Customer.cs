@@ -15,7 +15,7 @@ public class Customer
     {
         foreach (Order order in orders)
         {
-            Console.WriteLine($"{order.ID}, {order.TotalSum()}");
+            Console.WriteLine($"ID: {order.ID}, сумма: {order.TotalSum()} руб.");
         }
     }
 
@@ -28,6 +28,10 @@ public class Customer
             if (int.TryParse(value, out int num))
             {
                 throw new Exception("Ошибка! Имя не может быть числом");
+            }
+            else if (value == String.Empty)
+            {
+                throw new Exception("Ошибка! Имя не может отсутствовать");
             }
             else
             {
@@ -45,6 +49,10 @@ public class Customer
             {
                 throw new Exception("Ошибка! Фамилия не может быть числом");
             }
+            else if (value == String.Empty)
+            {
+                throw new Exception("Ошибка! Фамилия не может отсутствовать");
+            }
             else
             {
                 _surname = value;
@@ -57,6 +65,10 @@ public class Customer
         get { return _phoneNumber; }
         set
         {
+            if (value == String.Empty)
+            {
+                throw new Exception("Ошибка! Номер не может отсутствовать");
+            }
             if (value[0] == '+' && value[1] == '7')
             {
 

@@ -55,7 +55,7 @@ public class Shop
     {
         foreach (Customer customer in customers)
         {
-            Console.WriteLine($"{customer.Name}, {customer.Surname}, {customer.PhoneNumber}");
+            Console.WriteLine($"ФИ: {customer.Name} {customer.Surname}, номер телефона - {customer.PhoneNumber}");
         }
     }
     public void AddGoods<T>(T product) where T : Goods
