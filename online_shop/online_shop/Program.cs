@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
+using Spire.Xls;
 
 namespace online_shop
 {
@@ -21,6 +22,7 @@ namespace online_shop
         public const int order = 4;
         public const int registration = 1;
         public const int remove = 2;
+        public const int save = 5;
 
         static void Main(string[] args)
         {
@@ -57,7 +59,7 @@ namespace online_shop
 
             while (true)
             {
-                Console.WriteLine("Для работы над аккаунтом нажмите 1, показать всех пользователей - 2, показать все товары - 3, сделать заказ - 4");
+                Console.WriteLine("Для работы над аккаунтом нажмите 1, показать всех пользователей - 2, показать все товары - 3, сделать заказ - 4, для работы с бд - 5");
                 int number = int.Parse(Console.ReadLine());
                 Console.Clear();
 
@@ -173,6 +175,9 @@ namespace online_shop
                         (shop.SearchCustomer(numCustomer)).ShowOrders();
                         Continue();
                         break;
+                    case save: 
+                        shop.SavingInBD();
+                        break;
                 }
             }
         }
@@ -181,5 +186,27 @@ namespace online_shop
 
 public class DataBase
 {
+    string path;
+    static Workbook workbook = new();
+    Worksheet worksheet = workbook.Worksheets[0];
+    public DataBase(string path)
+    {
+        this.path = path;
+    }
 
+    static int rowCustomers = 1;
+    public void SaveCustomersDB(List<Customer> customers)
+    {
+        foreach (Customer customer in customers)
+        {
+            int column = 1;
+            worksheet.Range[rowCustomers, column].Value = customer.Name;
+            column++;
+            worksheet.Range[rowCustomers, column].Value = customer.Surname;
+            column++;
+            worksheet.Range[rowCustomers, column].Value = customer.PhoneNumber;
+            workbook.SaveToFile(path);
+            rowCustomers++;
+        }
+    }
 }

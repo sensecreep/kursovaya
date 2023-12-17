@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 public class Shop
 {
+    DataBase _data = new("DataBase.xlsx");
     public static List<Customer> customers = new();
     public static List<Goods> goods = new();
     public static List<Record> records = new();
@@ -112,5 +113,9 @@ public class Shop
             }
         }
         return null;
+    }
+    public void SavingInBD()
+    {
+        _data.SaveCustomersDB(customers);
     }
 }

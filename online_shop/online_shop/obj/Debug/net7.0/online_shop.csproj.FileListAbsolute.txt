@@ -26,3 +26,15 @@ D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\refint\online_shop.dll
 D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.pdb
 D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.genruntimeconfig.cache
 D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\ref\online_shop.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\Spire.Pdf.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\Spire.XLS.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\System.Drawing.Common.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\System.Security.Cryptography.Xml.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+D:\kursovaya\online_shop\online_shop\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.csproj.AssemblyReference.cache
+D:\kursovaya\online_shop\online_shop\obj\Debug\net7.0\online_shop.csproj.CopyComplete
