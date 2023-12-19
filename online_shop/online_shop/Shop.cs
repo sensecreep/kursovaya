@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//класс магазина
 public class Shop
 {
-    DataBase _data = new("DataBase.xlsx");
-    public static List<Customer> customers = new();
-    public static List<Goods> goods = new();
-    public static List<Record> records = new();
-    public static List<CD> cds = new();
-    public void AddCustomer()
+    DataBase _data = new("DataBase.xlsx"); //экземпляр бд с переданным в конструктор путем файла
+    public static List<Customer> customers = new(); //список пользователей
+    public static List<Goods> goods = new(); //список товаров
+    public static List<Record> records = new(); //список пластинок
+    public static List<CD> cds = new(); //список компакт-дисков
+    public void AddCustomer() //добавление пользователя
     {
         Customer customer = new Customer();
         Console.WriteLine("Введите имя пользователя: ");
@@ -29,19 +30,18 @@ public class Shop
         }
         customers.Add(customer);
     }
-    public void RemoveCustomer(string phoneNum)
+    public void RemoveCustomer(string phoneNum) //удаление пользователя
     {
         foreach (Customer customer in customers)
         {
             if (customer.PhoneNumber == phoneNum)
             {
-                //Console.WriteLine($"{customer.Name}, {customer.Surname}, {customer.PhoneNumber}");
                 customers.RemoveAt(customers.IndexOf(customer));
                 break;
             }
         }
     }
-    public Customer SearchCustomer(string phoneNum)
+    public Customer SearchCustomer(string phoneNum) //поиск пользователя
     {
         foreach (Customer customer in customers)
         {
@@ -52,14 +52,14 @@ public class Shop
         }
         return null;
     }
-    public void PrintCustomers()
+    public void PrintCustomers() //показ всех пользователей
     {
         foreach (Customer customer in customers)
         {
             Console.WriteLine($"ФИ: {customer.Name} {customer.Surname}, номер телефона - {customer.PhoneNumber}");
         }
     }
-    public void AddGoods<T>(T product) where T : Goods
+    public void AddGoods<T>(T product) where T : Goods //добавление товаров в списки
     {
         if (product is Record record) //добавление пластинки в список всех товаров и список пластинок
         {
@@ -72,7 +72,7 @@ public class Shop
             goods.Add(product);
         }
     }
-    public void PrintGoods(int num)
+    public void PrintGoods(int num) //показ товаров по категориям
     {
         if (num == 1)
         {
@@ -103,7 +103,7 @@ public class Shop
             }
         }
     }
-    public Goods SearchGoods(int num)
+    public Goods SearchGoods(int num) //поиск товаров
     {
         foreach (Goods product in goods)
         {
@@ -114,8 +114,12 @@ public class Shop
         }
         return null;
     }
-    public void SavingInBD()
+    public void SavingInBD() //передача данных в бд для сохранения
     {
         _data.SaveCustomersDB(customers);
+    }
+    public void ReadingBD() //принятие данных из бд
+    {
+        customers = _data.ReadCustomersDB();
     }
 }

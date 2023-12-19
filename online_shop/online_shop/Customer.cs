@@ -4,23 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//класс покупателя
 public class Customer
 {
-    List<Order> orders = new();
-    public void AddNewOrder(Order order)
+    List<Order> orders = new(); //список заказов
+    public void AddNewOrder(Order order) //добавление заказа
     {
         orders.Add(order);
     }
-    public void ShowOrders()
+    public void ShowOrders() //показать заказы
     {
-        foreach (Order order in orders)
+        if (orders.Count > 0)
         {
-            Console.WriteLine($"ID: {order.ID}, сумма: {order.TotalSum()} руб.");
+            foreach (Order order in orders)
+            {
+                Console.WriteLine($"ID: {order.ID}, сумма: {order.TotalSum()} руб.");
+            }
         }
+        else { Console.WriteLine("Заказы отсутсвуют"); }
     }
 
-    string _name;
-    public string Name
+    string _name; //имя
+    public string Name //свойство имени
     {
         get { return _name; }
         set
@@ -39,7 +44,7 @@ public class Customer
             }
         }
     }
-    string _surname;
+    string _surname; //фамилия
     public string Surname
     {
         get { return _surname; }
@@ -59,7 +64,7 @@ public class Customer
             }
         }
     }
-    string _phoneNumber;
+    string _phoneNumber; //номер телефона 
     public string PhoneNumber
     {
         get { return _phoneNumber; }
@@ -74,9 +79,13 @@ public class Customer
 
                 value = '8' + value.Substring(2);
             }
-            if (value[0] != '8') //еще про кол-во цифр дописать надо
+            if (value[0] != '8')
             {
                 throw new Exception("Ошибка! Номер не соответсвует стандарту: должен начинать с +7 или 8");
+            }
+            if (value.Length == 11)
+            {
+                throw new Exception("Ошибка! Номер не соответсвует стандарту: должно быть 11 цифр");
             }
             if (int.TryParse(value, out int num))
             {

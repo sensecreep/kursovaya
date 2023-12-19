@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
-using Spire.Xls;
+using Spire.Xls; //подключение библиотеки для работы с excel файлами
 
 namespace online_shop
 {
@@ -22,7 +22,9 @@ namespace online_shop
         public const int order = 4;
         public const int registration = 1;
         public const int remove = 2;
-        public const int save = 5;
+        public const int bd = 5;
+        public const int save = 1;
+        public const int read = 2;
 
         static void Main(string[] args)
         {
@@ -124,6 +126,7 @@ namespace online_shop
                         break;
                     case order:
                         string stop = "none";
+                        string cancel = "none";
                         Order newOrder = new();
 
                         Random random = new Random();
@@ -163,8 +166,15 @@ namespace online_shop
                             newOrder.PrintOrder();
                             Console.WriteLine($"Итоговая стоимость: {newOrder.TotalSum()} руб.");
 
-                            Console.WriteLine("\nДля продолжения покупок нажмите Enter, для завершения заказа - 'S'");
+                            Console.WriteLine("\nДля продолжения покупок нажмите Enter, для завершения заказа - 'S', для отмены заказа - 'C' (лат.)");
                             stop = Console.ReadLine().ToUpper();
+                            if (stop == "C")
+                            {
+                                newOrder.Cancel();
+                                Console.WriteLine("Заказ отменен");
+                                Continue();
+                                break;
+                            }
                             Console.Clear();
                         }
                         if (newOrder.CountProducts() != 0)
@@ -175,38 +185,26 @@ namespace online_shop
                         (shop.SearchCustomer(numCustomer)).ShowOrders();
                         Continue();
                         break;
-                    case save: 
-                        shop.SavingInBD();
+                    case bd:
+                        int numb = 0;
+                        Console.WriteLine("Для сохранения бд нажмите 1, для чтения бд - 2");
+                        numb = int.Parse(Console.ReadLine());
+                        switch(numb)
+                        {
+                            case save:
+                                shop.SavingInBD();
+                                Console.WriteLine("База данных пользователей сохранена");
+                                Continue();
+                                break;
+                            case read:
+                                shop.ReadingBD();
+                                Console.WriteLine("База данных пользователей теперь активна");
+                                Continue();
+                                break;
+                        }
                         break;
                 }
             }
-        }
-    }
-}
-
-public class DataBase
-{
-    string path;
-    static Workbook workbook = new();
-    Worksheet worksheet = workbook.Worksheets[0];
-    public DataBase(string path)
-    {
-        this.path = path;
-    }
-
-    static int rowCustomers = 1;
-    public void SaveCustomersDB(List<Customer> customers)
-    {
-        foreach (Customer customer in customers)
-        {
-            int column = 1;
-            worksheet.Range[rowCustomers, column].Value = customer.Name;
-            column++;
-            worksheet.Range[rowCustomers, column].Value = customer.Surname;
-            column++;
-            worksheet.Range[rowCustomers, column].Value = customer.PhoneNumber;
-            workbook.SaveToFile(path);
-            rowCustomers++;
         }
     }
 }

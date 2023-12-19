@@ -35,7 +35,7 @@ abstract public class Goods
         Price = price;
         AmountInStock = amountInStock;
     }
-    public abstract string Info(); //ф-ция для вывода информации о товаре
+    public abstract string Info(); //метод для вывода информации о товаре
     public int InStock() //ф-ция, считающая и запоминающее оставшееся кол-во товаров после их покупки
     {
         return AmountInStock -= 1;
@@ -48,16 +48,16 @@ public class Record : Goods //класс-наследник для винило�
     {
         Color = color;
     }
-    public override string Info() 
+    public override string Info() //переопределение метода в классе-наследнике
     {
         return $"(ID: {ID}) '{Album}' - {Band}, {Price} руб., в наличии {AmountInStock} шт., цвет: {Color}";
     }
 }
 
-public class CD : Goods
+public class CD : Goods //класс-наследник для компакт-дисков
 {
     public CD(int id, string album, string band, double price, int amountInStock) : base(id, album, band, price, amountInStock) { }
-    public override string Info()
+    public override string Info() 
     {
         return $"(ID: {ID}) '{Album}' - {Band}, {Price} руб., в наличии {AmountInStock} шт.";
     }
