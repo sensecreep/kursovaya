@@ -30,7 +30,7 @@ public class Customer
         get { return _name; }
         set
         {
-            if (int.TryParse(value, out int num))
+            if (double.TryParse(value, out double num))
             {
                 throw new Exception("Ошибка! Имя не может быть числом");
             }
@@ -50,7 +50,7 @@ public class Customer
         get { return _surname; }
         set
         {
-            if (int.TryParse(value, out int num))
+            if (double.TryParse(value, out double num))
             {
                 throw new Exception("Ошибка! Фамилия не может быть числом");
             }
@@ -83,11 +83,11 @@ public class Customer
             {
                 throw new Exception("Ошибка! Номер не соответсвует стандарту: должен начинать с +7 или 8");
             }
-            if (value.Length == 11)
+            if (value.Length != 11)
             {
-                throw new Exception("Ошибка! Номер не соответсвует стандарту: должно быть 11 цифр");
+                throw new Exception("Ошибка! Номер не соответсвует стандарту: должен содержать 11 цифр");
             }
-            if (int.TryParse(value, out int num))
+            if (long.TryParse(value, out long num))
             {
                 _phoneNumber = value;
             }
